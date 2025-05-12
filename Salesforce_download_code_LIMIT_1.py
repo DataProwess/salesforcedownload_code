@@ -49,15 +49,12 @@ headers = {"Authorization": f"Bearer {access_token}"}
 projects = []
 with open(CSV_FILE, newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
-    print("CSV Headers:", reader.fieldnames) 
     for row in reader:
         if row["Status"].strip().lower() == "in progress":
-            # projects.append({
-            #     "id": row["Project - Compass: ID"],
-            #     "name": row["Project - Compass: Project Name"]
-            # })
-            projects.append(row["Project - Compass: Project Name"].strip())
-
+            projects.append({
+                "id": row["Project - Compass: ID"],
+                "name": row["Project - Compass: Project Name"]
+            })
 
 print(f"📝 Found {len(projects)} In Progress projects in CSV")
 
@@ -68,16 +65,13 @@ base_download_dir = os.path.join(base_dir, "salesforce_document_folder_downloads
 os.makedirs(base_download_dir, exist_ok=True)
 
 # ==== STEP 4: Loop through Projects and Download Files ====
-for project_name in projects:
-    # project_id = project["id"]
-    # project_name = project["name"]
-    print(f"\n📁 Project: {project_name}")
-    # print(f"\n📁 Project: {project_name} ({project_id})")
+for project in projects:
+    project_id = project["id"]
+    project_name = project["name"]
+    print(f"\n📁 Project: {project_name} ({project_id})")
 
     # Get Gates for this Project
-    # gate_query = f"SELECT Id, Name FROM LLCompass_Gate__c WHERE Project__c = '{project_id}'"
-    gate_query = f"SELECT Id, Name FROM LLCompass_Gate__c WHERE Project__r.Name = '{project_name}'"
-
+    gate_query = f"SELECT Id, Name FROM LLCompass_Gate__c WHERE Project__c = '{project_id}' LIMIT 1"
     gates = requests.get(f"{instance_url}/services/data/v63.0/query",
                          headers=headers, params={"q": gate_query}).json()
     
