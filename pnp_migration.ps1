@@ -2,10 +2,11 @@ Import-Module PnP.PowerShell
 
 # Config
 $sourceFolder = "D:\salesforcedownload_code\salesforce_document_folder_downloads\SalesForceProjectsDownload_2025-05-12_09-08"
-$siteUrl = "https://lendlease.sharepoint.com/sites/BAULD_TEST"
+# $siteUrl = ""https://lendlease.sharepoint.com/sites/BAULD_TEST""
+$siteUrl = "https://lendlease.sharepoint.com/sites/ProjectProteus"
 $libraryName = "Shared Documents"
 
-$spRootFolder = "$libraryName/ani_demo_mig_phase1"
+$spRootFolder = "$libraryName/ani_salesforce_uplaod_demo"
 
 $timestampTag = Get-Date -Format "yyyy-MM-dd_HHmm"
 $uploadLogPath = "upload_log_$timestampTag.txt"
@@ -38,6 +39,8 @@ foreach ($File in $Files) {
 
         Write-Host "Uploading $($File.Name) to $spFolderPath"
         Add-PnPFile -Path $File.FullName -Folder $spFolderPath
+
+
 
         # Track uploaded file size
         $totalSize += $File.Length
