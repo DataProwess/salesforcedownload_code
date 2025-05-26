@@ -24,6 +24,15 @@ Make sure the following are installed:
 - [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell) (on Windows or cross-platform via PowerShell Core)
 - Salesforce credentials or configuration (as required by the Python script)
 
+---
+## 📦 Installation
+
+Install the required Python packages:
+
+```bash
+pip install -r requirements.txt
+
+---
 ## 🚀 Usage
 
 ### ▶️ Run the Python Script
