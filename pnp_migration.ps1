@@ -1,12 +1,10 @@
 Import-Module PnP.PowerShell
 
 # Config
-$sourceFolder = "D:\salesforcedownload_code\salesforce_document_folder_downloads\SalesForceProjectsDownload_2025-05-12_09-08"
-# $siteUrl = ""https://lendlease.sharepoint.com/sites/BAULD_TEST""
-$siteUrl = "https://lendlease.sharepoint.com/sites/ProjectProteus"
-$libraryName = "Shared Documents"
-
-$spRootFolder = "$libraryName/ani_salesforce_uplaod_demo"
+$sourceFolder = "D:\salesforcedownload_code\salesforce_document_folder_downloads\SalesForceProjectsDownload_2025-05-21_10-39\Melbourne Quarter R1"
+$siteUrl = "https://lendlease.sharepoint.com/sites/MelbourneQuarterR1"
+$libraryName = "Shared documents"
+$spRootFolder = "$libraryName/Project Files/17. Historical Compass Document/"
 
 $timestampTag = Get-Date -Format "yyyy-MM-dd_HHmm"
 $uploadLogPath = "upload_log_$timestampTag.txt"
@@ -20,7 +18,7 @@ $startTime = Get-Date
 $totalSize = 0
 
 # Connect to SharePoint
-Connect-PnPOnline -Url $siteUrl -Interactive -ClientId "a907eb35-5fdd-41ea-8666-dd45affa1944"
+Connect-PnPOnline -Url $siteUrl -Interactive -ClientId "a907eb35-5fdd-41ea-8666-dd45affa1944" 
 
 # Get all files recursively
 $Files = Get-ChildItem -Path $sourceFolder -Recurse -File

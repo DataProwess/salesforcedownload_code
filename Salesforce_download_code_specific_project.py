@@ -12,7 +12,7 @@ def sanitize_filename(name):
 
 
 # ==== CONFIGURATION ====
-CSV_FILE = "report1746679951782in.csv"  # Path to your CSV
+# CSV_FILE = "report1746679951782in.csv"  # Path to your CSV
 
 
 SF_CLIENT_ID = os.getenv("SF_CLIENT_ID")
