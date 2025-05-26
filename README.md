@@ -32,6 +32,8 @@ Install the required Python packages:
 ```bash
 pip install -r requirements.txt
 
+```
+
 ---
 ## 🚀 Usage
 
@@ -42,6 +44,8 @@ This script downloads metadata/code from a specific Salesforce project.
 ```bash
 python Salesforce_download_code_specific_project.py
 
+```
+
 
 ### ▶️ Run the Powershell Script
 
@@ -49,4 +53,6 @@ This script Uploads metadata to a Sharepoint site.
 
 ```bash
 .\pnp_migration.ps1
+
+```
 
