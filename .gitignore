@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 /salesforce_document_folder_downloads/
 
-*.txt
+
 *.csv
