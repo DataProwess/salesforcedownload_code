@@ -29,23 +29,40 @@ Make sure the following are installed:
 
 Install the required Python packages:
 
-```bash
+```pip
 pip install -r requirements.txt
 
 ```
 
 ---
+## ⚠️ Warning
+
+Before running the Python script, **make sure to update the project name** in the code:
+
+```python
+project_name = "YOUR DESIRED PROJECT NAME"  # Replace with your actual project name
+
+```
 ## 🚀 Usage
 
 ### ▶️ Run the Python Script
 
 This script downloads metadata/code from a specific Salesforce project.
 
-```bash
+```python
 python Salesforce_download_code_specific_project.py
 
 ```
+---
+## ⚠️ Warning
 
+Before running the Powershell script, **make sure to update the $sourceFolder and $siteUrl** in the code:
+
+```bash
+$sourceFolder = "LOCAL PATH TO THE FOLDER CONTAINING THE PROJECT"
+$siteUrl = "https://lendlease.sharepoint.com/sites/*SITENAME*"
+
+```
 
 ### ▶️ Run the Powershell Script
 
