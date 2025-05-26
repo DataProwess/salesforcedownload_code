@@ -160,5 +160,10 @@ cython_debug/
 #.idea/
 /salesforce_document_folder_downloads/
 
+# Ignore all .txt files
+*.txt
+
+# But do NOT ignore requirements.txt
+!requirements.txt
 
 *.csv
