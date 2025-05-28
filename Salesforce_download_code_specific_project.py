@@ -5,15 +5,14 @@ from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 import re
+ 
+
 
 def sanitize_filename(name):
     return re.sub(r'[<>:"/\\|?*]', '_', name)
 
-
-
 # ==== CONFIGURATION ====
 # CSV_FILE = "report1746679951782in.csv"  # Path to your CSV
-
 
 SF_CLIENT_ID = os.getenv("SF_CLIENT_ID")
 SF_CLIENT_SECRET = os.getenv("SF_CLIENT_SECRET")
@@ -33,10 +32,8 @@ auth_payload = {
     "password": SF_PASSWORD + SF_SECURITY_TOKEN 
 }
 
-
 auth_response = requests.post(auth_url, data=auth_payload).json()
 print(f" Auth response: {auth_response}")
-
 
 if "access_token" not in auth_response:
     raise Exception(f"Auth failed: {auth_response}")
@@ -48,8 +45,6 @@ headers = {"Authorization": f"Bearer {access_token}"}
 # ==== STEP 2: Use a specific project name ====
 project_name = "Melbourne Quarter R1"  # Replace with your actual project name
 print(f"📝 Using specific project: {project_name}")
-
-
 
 # ==== STEP 3: Prepare Timestamped Download Folder ====
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
@@ -63,7 +58,7 @@ print(f"\n📁 Project: {project_name}  ")
 
 # Get Gates for this Project
 gate_query = f"SELECT Id, Name FROM LLCompass_Gate__c WHERE Project__r.Name = '{project_name}'"
-gates = requests.get(f"{instance_url}/services/data/v63.0/query",headers=headers, params={"q": gate_query}).json()
+gates = requests.get(f"{instance_url}/services/data/v63.0/query", headers=headers, params={"q": gate_query}).json()
 
 print("Gates API response:", gates)
 print("\n")
@@ -71,10 +66,6 @@ print("\n")
 query = "SELECT QualifiedApiName FROM EntityDefinition WHERE QualifiedApiName LIKE '%Gate%'"
 response = requests.get(f"{instance_url}/services/data/v63.0/query", headers=headers, params={"q": query})
 print(response.json())
-
-
-
-
 
 for gate in gates["records"]:
     gate_id = gate["Id"]
@@ -102,8 +93,6 @@ for gate in gates["records"]:
         file_url = f"{instance_url}/services/data/v63.0/sobjects/ContentVersion/{file_id}/VersionData"
 
         # Prepare full file path
-
-
         safe_project_name = sanitize_filename(project_name)
         safe_gate_name = sanitize_filename(gate_name)
 
@@ -112,10 +101,17 @@ for gate in gates["records"]:
 
         save_path = os.path.join(save_dir, file_name)
 
+        # Download and save file with error handling
+        try:
+            response = requests.get(file_url, headers=headers)
+            response.raise_for_status()  # Raise HTTPError for bad HTTP status codes
 
-        # Download the file
-        file_data = requests.get(file_url, headers=headers).content
-        with open(save_path, "wb") as f:
-            f.write(file_data)
+            with open(save_path, "wb") as f:
+                f.write(response.content)
 
-        print(f"    ✅ Downloaded: {file_name}")
+            print(f"    ✅ Downloaded: {file_name}")
+
+        except requests.exceptions.RequestException as e:
+            print(f"    ❌ Failed to download {file_name}: {e}")
+        except IOError as e:
+            print(f"    ❌ Failed to save {file_name}: {e}")
