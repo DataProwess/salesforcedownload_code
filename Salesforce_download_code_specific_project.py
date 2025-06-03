@@ -43,14 +43,17 @@ instance_url = auth_response["instance_url"]
 headers = {"Authorization": f"Bearer {access_token}"}
 
 # ==== STEP 2: Use a specific project name ====
-project_name = "Jordan Springs East - Stage 6"  # Replace with your actual project name
+project_name = "Melbourne Quarter R1"  # Replace with your actual project name
+sanitized_projectname=sanitize_filename(project_name)  # Sanitize project name for file system compatibility
 print(f"📝 Using specific project: {project_name}")
 
 # ==== STEP 3: Prepare Timestamped Download Folder ====
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 base_dir = os.getcwd()  # Gets current working directory on Windows or any OS
-base_download_dir = os.path.join(base_dir, "salesforce_document_folder_downloads", f"SalesForceProjectsDownload_{project_name}_{timestamp}")
+base_download_dir = os.path.join(base_dir, "salesforce_document_folder_downloads", f"SalesForceProjectsDownload_{sanitized_projectname}_{timestamp}")
 os.makedirs(base_download_dir, exist_ok=True)
+total_files_downloaded = 0
+total_folders_created = set()
 
 # ==== STEP 4: Loop through Projects and Download Files ====
 
@@ -98,6 +101,8 @@ for gate in gates["records"]:
 
         save_dir = os.path.join(base_download_dir, safe_project_name, safe_gate_name)
         os.makedirs(save_dir, exist_ok=True)
+        total_folders_created.add(save_dir)
+
 
         save_path = os.path.join(save_dir, file_name)
 
@@ -110,8 +115,20 @@ for gate in gates["records"]:
                 f.write(response.content)
 
             print(f"    ✅ Downloaded: {file_name}")
+            total_files_downloaded += 1
+
 
         except requests.exceptions.RequestException as e:
             print(f"    ❌ Failed to download {file_name}: {e}")
         except IOError as e:
             print(f"    ❌ Failed to save {file_name}: {e}")
+
+# ==== STEP 5: Write Summary Log ====
+log_path = os.path.join(base_download_dir, "download_log.txt")
+with open(log_path, "w") as log_file:
+    log_file.write(f"Total folders created: {len(total_folders_created)}\n")
+    log_file.write(f"Total files downloaded: {total_files_downloaded}\n")
+
+print(f"\n🧾 Log file created at: {log_path}")
+print(f"📦 Total folders: {len(total_folders_created)}, Total files: {total_files_downloaded}")
+

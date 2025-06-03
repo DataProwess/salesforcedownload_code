@@ -1,11 +1,11 @@
 Import-Module PnP.PowerShell
 
 # Config
-$sourceFolder = "D:\salesforcedownload_code\salesforce_document_folder_downloads\SalesForceProjectsDownload_2025-05-21_10-39\Melbourne Quarter R1"
-$siteUrl = "https://lendlease.sharepoint.com/sites/MelbourneQuarterR1"
+$sourceFolder = "D:\salesforcedownload_code\salesforce_document_folder_downloads\SalesForceProjectsDownload_Melbourne Quarter R1_2025-06-03_07-52\Melbourne Quarter R1"
+$siteUrl = "https://lendlease.sharepoint.com/sites/47WestgateDrive"
 
 $libraryName = "Shared documents"
-$spRootFolder = "$libraryName/Project Files/17. Historical Compass Document/"
+$spRootFolder = "$libraryName/Project Files/17. Historical Compass Document"
 
 $timestampTag = Get-Date -Format "yyyy-MM-dd_HHmm"
 $uploadLogPath = "upload_log_$timestampTag.txt"
@@ -76,3 +76,73 @@ Completed at: $endTime
 Duration     : $duration
 Total Size   : $sizeMB MB ($sizeGB GB)
 "@ | Out-File -Append -FilePath $uploadLogPath
+
+# === VERIFICATION STEP ===
+
+# Count local files and folders
+$localFiles = Get-ChildItem -Path $sourceFolder -Recurse -File
+$localFolders = Get-ChildItem -Path $sourceFolder -Recurse -Directory
+
+$localFileCount = $localFiles.Count
+$localFolderCount = $localFolders.Count
+
+# Get SharePoint files recursively
+# Recursive function to collect SP files and folders
+function Get-SPItemsRecursive {
+    param (
+        [string]$folderSiteRelativeUrl
+    )
+
+    $allFiles = @()
+    $allFolders = @()
+
+    try {
+        $items = Get-PnPFolderItem -FolderSiteRelativeUrl $folderSiteRelativeUrl -ErrorAction Stop
+    } catch {
+        Write-Host "⚠️  Failed to access: $folderSiteRelativeUrl - $($_.Exception.Message)" -ForegroundColor Red
+        return [PSCustomObject]@{
+            Files   = $allFiles
+            Folders = $allFolders
+        }
+    }
+
+    foreach ($item in $items) {
+        if ($item -is [Microsoft.SharePoint.Client.File]) {
+            $allFiles += $item
+        }
+        elseif ($item -is [Microsoft.SharePoint.Client.Folder]) {
+            $allFolders += $item
+            $subFolderUrl = "$folderSiteRelativeUrl/$($item.Name)"
+            $result = Get-SPItemsRecursive -folderSiteRelativeUrl $subFolderUrl
+            $allFiles += $result.Files
+            $allFolders += $result.Folders
+        }
+    }
+
+    return [PSCustomObject]@{
+        Files   = $allFiles
+        Folders = $allFolders
+    }
+}
+
+
+
+Write-Host "`n🔍 Verifying upload..." -ForegroundColor Yellow
+
+# Corrected function call with correct parameter name
+$spItems = Get-SPItemsRecursive -folderSiteRelativeUrl $spRootFolder
+$spFileCount = $spItems.Files.Count
+$spFolderCount = $spItems.Folders.Count
+
+# Output verification summary
+Write-Host "`n====== Verification Summary ======" -ForegroundColor Green
+Write-Host "Local files        : $localFileCount"
+Write-Host "Local folders      : $localFolderCount"
+Write-Host "SharePoint files   : $spFileCount"
+Write-Host "SharePoint folders : $spFolderCount"
+
+if (($spFileCount -eq $localFileCount) -and ($spFolderCount -eq $localFolderCount)) {
+    Write-Host "✅ All files and folders appear to be uploaded correctly!" -ForegroundColor Green
+} else {
+    Write-Host "⚠️  Mismatch: Some files or folders might be missing in SharePoint!" -ForegroundColor Red
+}
