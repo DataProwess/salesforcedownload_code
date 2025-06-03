@@ -43,13 +43,13 @@ instance_url = auth_response["instance_url"]
 headers = {"Authorization": f"Bearer {access_token}"}
 
 # ==== STEP 2: Use a specific project name ====
-project_name = "Melbourne Quarter R1"  # Replace with your actual project name
+project_name = "Jordan Springs East - Stage 6"  # Replace with your actual project name
 print(f"📝 Using specific project: {project_name}")
 
 # ==== STEP 3: Prepare Timestamped Download Folder ====
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 base_dir = os.getcwd()  # Gets current working directory on Windows or any OS
-base_download_dir = os.path.join(base_dir, "salesforce_document_folder_downloads", f"SalesForceProjectsDownload_{timestamp}")
+base_download_dir = os.path.join(base_dir, "salesforce_document_folder_downloads", f"SalesForceProjectsDownload_{project_name}_{timestamp}")
 os.makedirs(base_download_dir, exist_ok=True)
 
 # ==== STEP 4: Loop through Projects and Download Files ====
