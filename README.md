@@ -21,7 +21,8 @@ Make sure the following are installed:
 
 - [Python 3.7+](https://www.python.org/downloads/)
 - [pip](https://pip.pypa.io/en/stable/)
-- [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell) (on Windows or cross-platform via PowerShell Core)
+- [PowerShell-7]
+- .env file in the current directory with the needed credentials 
 - Salesforce credentials or configuration (as required by the Python script)
 
 ---
