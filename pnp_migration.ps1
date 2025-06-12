@@ -1,8 +1,8 @@
 Import-Module PnP.PowerShell
 
 # Config
-$sourceFolder = "D:\salesforcedownload_code\salesforce_document_folder_downloads\SalesForceProjectsDownload_Melbourne Quarter R1_2025-06-03_07-52\Melbourne Quarter R1"
-$siteUrl = "https://lendlease.sharepoint.com/sites/47WestgateDrive"
+$sourceFolder = "D:\salesforcedownload_code\salesforce_document_folder_downloads\SalesForceProjectsDownload_Melbourne Quarter (Parent Project)_2025-06-12_12-12\Melbourne Quarter (Parent Project)"
+$siteUrl = "https://lendlease.sharepoint.com/sites/MelbourneQuarter(ParentProject)"
 
 $libraryName = "Shared documents"
 $spRootFolder = "$libraryName/Project Files/17. Historical Compass Document"
