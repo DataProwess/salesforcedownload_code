@@ -2,11 +2,10 @@ import csv
 import os
 import requests
 from datetime import datetime
-from dotenv import load_dotenv
-load_dotenv()
 import re
- 
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def sanitize_filename(name):
     return re.sub(r'[<>:"/\\|?*]', '_', name)
@@ -22,7 +21,7 @@ SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN")  # Optional, only if needed
 
 # ==== STEP 1: Authenticate to Salesforce ====
 auth_url = "https://lendlease--uat.sandbox.my.salesforce.com/services/oauth2/token"
-# auth_url = "https://test.salesforce.com/services/oauth2/token"
+
 
 auth_payload = {
     "grant_type": "password",
@@ -43,7 +42,7 @@ instance_url = auth_response["instance_url"]
 headers = {"Authorization": f"Bearer {access_token}"}
 
 # ==== STEP 2: Use a specific project name ====
-project_name = "Melbourne Quarter R1"  # Replace with your actual project name
+project_name = "Melbourne Quarter (Parent Project)"  # Replace with your actual project name
 sanitized_projectname=sanitize_filename(project_name)  # Sanitize project name for file system compatibility
 print(f"📝 Using specific project: {project_name}")
 
