@@ -21,7 +21,8 @@ SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN")
 SHAREPOINT_CLIENT_ID = os.getenv("SHAREPOINT_CLIENT_ID")
 SHAREPOINT_CLIENT_SECRET = os.getenv("SHAREPOINT_CLIENT_SECRET")
 SHAREPOINT_TENANT_ID = os.getenv("SHAREPOINT_TENANT_ID")
-SHAREPOINT_SITE_NAME = os.getenv("SHAREPOINT_SITE_NAME")
+
+SHAREPOINT_SITE_NAME = "https://lendlease.sharepoint.com/sites/Inflightprojecttest1" #os.getenv("SHAREPOINT_SITE_NAME")
 
 # ==== AUTHENTICATION ====
 # Salesforce Auth
@@ -60,7 +61,7 @@ sp_headers = {
 def upload_to_sharepoint(file_content, file_name, folder_path):
     try:
         # Ensure folder path starts with document library
-        full_path = f"/sites/{SHAREPOINT_SITE_NAME}/DocumentLibrary/{folder_path}"
+        full_path = f"/sites/{SHAREPOINT_SITE_NAME}/Shared%20Documents/{folder_path}"
         
         # Create folder structure if needed
         create_folder(full_path)
