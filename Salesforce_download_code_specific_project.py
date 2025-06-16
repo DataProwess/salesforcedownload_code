@@ -21,7 +21,8 @@ SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN")  # Optional, only if needed
 
 # ==== STEP 1: Authenticate to Salesforce ====
 auth_url = "https://lendlease--uat.sandbox.my.salesforce.com/services/oauth2/token"
-
+# auth_url = "https://lendlease.my.salesforce.com/services/oauth2/token"
+# auth_url = "https://lendlease.my.salesforce.com/app/mgmt/forceconnectedapps/forceAppDetail.apexp?applicationId=06POZ0000000JAj&applicationId=06POZ0000000JAj&id=0CiOZ00000004Wf"
 
 auth_payload = {
     "grant_type": "password",
@@ -130,4 +131,3 @@ with open(log_path, "w") as log_file:
 
 print(f"\n🧾 Log file created at: {log_path}")
 print(f"📦 Total folders: {len(total_folders_created)}, Total files: {total_files_downloaded}")
-
