@@ -20,27 +20,45 @@ SF_PASSWORD = os.getenv("SF_PASSWORD")
 SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN")  # Optional, only if needed
 
 # ==== STEP 1: Authenticate to Salesforce ====
-auth_url = "https://lendlease--uat.sandbox.my.salesforce.com/services/oauth2/token"
+# auth_url = "https://lendlease--uat.sandbox.my.salesforce.com/services/oauth2/token"
 # auth_url = "https://lendlease.my.salesforce.com/services/oauth2/token"
 # auth_url = "https://lendlease.my.salesforce.com/app/mgmt/forceconnectedapps/forceAppDetail.apexp?applicationId=06POZ0000000JAj&applicationId=06POZ0000000JAj&id=0CiOZ00000004Wf"
 
-auth_payload = {
-    "grant_type": "password",
-    "client_id": SF_CLIENT_ID,
-    "client_secret": SF_CLIENT_SECRET,
-    "username": SF_USERNAME, 
-    "password": SF_PASSWORD + SF_SECURITY_TOKEN 
-}
+# auth_payload = {
+#     "grant_type": "password",
+#     "client_id": SF_CLIENT_ID,
+#     "client_secret": SF_CLIENT_SECRET,
+#     "username": SF_USERNAME, 
+#     "password": SF_PASSWORD + SF_SECURITY_TOKEN 
+# }
 
-auth_response = requests.post(auth_url, data=auth_payload).json()
-print(f" Auth response: {auth_response}")
+# auth_response = requests.post(auth_url, data=auth_payload).json()
+# print(f" Auth response: {auth_response}")
 
-if "access_token" not in auth_response:
-    raise Exception(f"Auth failed: {auth_response}")
+# if "access_token" not in auth_response:
+#     raise Exception(f"Auth failed: {auth_response}")
 
-access_token = auth_response["access_token"]
-instance_url = auth_response["instance_url"]
+access_token =  "00D200000000aXw!AQEAQAaVPg78MJwznuL_poMY9kwZmkISSdZAW3SBGvGQG8ev0a3qsU6JsEOrIMLUf1O41_rVUnCcvdlykV_z._zaJ12I81PX" #auth_response["access_token"]
+instance_url ="https://lendlease.my.salesforce.com" #auth_response["instance_url"]
 headers = {"Authorization": f"Bearer {access_token}"}
+
+
+###########
+# Authenticate to Salesforce
+# TOKEN_URL="https://login.salesforce.com/services/oauth2/authorize?redirect_uri=https://login.salesforce.com/services/oauth2/success&response_type=code" 
+# payload = {
+#             # "grant_type": "password",
+#             "response_type": "code",
+#             "client_id": SF_CLIENT_ID,
+#             # "client_secret": SF_CLIENT_SECRET,
+#             # "username": SF_USERNAME, 
+#             # "password": SF_PASSWORD + SF_SECURITY_TOKEN 
+#         }
+# headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+# response = requests.post(TOKEN_URL, data=payload, headers=headers)
+# print(response.status_code)
+# print(response.content)
+# print(response.text)
 
 # ==== STEP 2: Use a specific project name ====
 project_name = "Melbourne Quarter (Parent Project)"  # Replace with your actual project name

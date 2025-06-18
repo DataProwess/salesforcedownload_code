@@ -51,7 +51,22 @@ sharepoint_auth_data = {
     "client_secret": SHAREPOINT_CLIENT_SECRET,
     "resource": "00000003-0000-0ff1-ce00-000000000000"
 }
-sharepoint_token = requests.post(sharepoint_token_url, data=sharepoint_auth_data).json()["access_token"]
+# ==== SharePoint Auth with Error Handling ====
+try:
+    sharepoint_token_response = requests.post(sharepoint_token_url, data=sharepoint_auth_data)
+    sharepoint_token_response.raise_for_status()  # Check for HTTP errors
+    sharepoint_token = sharepoint_token_response.json()["access_token"]
+except requests.exceptions.HTTPError as http_err:
+    print(f"❗ SharePoint auth HTTP error: {http_err}")
+    print(f"❗ Server response: {sharepoint_token_response.text}")
+    exit(1)
+except KeyError:
+    print("❗ Invalid SharePoint auth response - check credentials:")
+    print(f"❗ Response received: {sharepoint_token_response.json()}")
+    exit(1)
+except Exception as e:
+    print(f"❗ SharePoint auth failed: {str(e)}")
+    exit(1)
 sp_headers = {
     "Authorization": f"Bearer {sharepoint_token}",
     "Accept": "application/json;odata=verbose"
