@@ -22,6 +22,7 @@ Make sure the following are installed:
 - [Python 3.7+](https://www.python.org/downloads/)
 - [pip](https://pip.pypa.io/en/stable/)
 - [PowerShell-7]
+- [Salesforce CLI] (https://developer.salesforce.com/tools/salesforcecli)
 - .env file in the current directory with the needed credentials 
 - Salesforce credentials or configuration (as required by the Python script)
 
@@ -35,12 +36,26 @@ pip install -r requirements.txt
 
 ```
 
+Install Salesforce CLI to get access token by running these commands in order in terminal:
+
+```salesforce cli
+sf --version
+ 
+sf org login web
+ 
+sf org display --target-org email_associated_to_the_production_salesforce_env
+
+```
+
 ---
 ## ⚠️ Warning
 
-Before running the Python script, **make sure to update the `project_name`** in the code:
+Before running the Python script, **make sure to update the `project_name`** and **`access_token`** in the code:
 
 ```python
+
+access_token =  "ACCESS token from Salesforce CLI"
+
 project_name = "YOUR DESIRED PROJECT NAME"  # Replace with your actual project name
 
 ```
