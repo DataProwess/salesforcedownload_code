@@ -50,12 +50,12 @@ sf org display --target-org email_associated_to_the_production_salesforce_env
 ---
 ## ⚠️ Warning
 
-Before running the Python script, **make sure to update the `project_name`** and **`access_token`** in the code:
+Before running the Python script, **make sure to update the `access_token`**, **`instance_url`** and **`project_name`** in the code:
 
 ```python
 
 access_token =  "ACCESS token from Salesforce CLI"
-
+instance_url = "instance_url from Salesforce CLI"
 project_name = "YOUR DESIRED PROJECT NAME"  # Replace with your actual project name
 
 ```
