@@ -135,14 +135,14 @@ for gate in gates["records"]:
             with open(save_path, "wb") as f:
                 f.write(response.content)
 
-            print(f"    ✅ Downloaded: {file_name}")
+            print(f"    ✅ Downloaded: {new_file_name}")
             total_files_downloaded += 1
 
 
         except requests.exceptions.RequestException as e:
-            print(f"    ❌ Failed to download {file_name}: {e}")
+            print(f"    ❌ Failed to download {new_file_name}: {e}")
         except IOError as e:
-            print(f"    ❌ Failed to save {file_name}: {e}")
+            print(f"    ❌ Failed to save {new_file_name}: {e}")
 
 # ==== STEP 5: Write Summary Log ====
 log_path = os.path.join(base_download_dir, "download_log.txt")
