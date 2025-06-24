@@ -38,8 +38,8 @@ SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN")  # Optional, only if needed
 # if "access_token" not in auth_response:
 #     raise Exception(f"Auth failed: {auth_response}")
 
-access_token =  "00D200000000aXw!AQEAQAaVPg78MJwznuL_poMY9kwZmkISSdZAW3SBGvGQG8ev0a3qsU6JsEOrIMLUf1O41_rVUnCcvdlykV_z._zaJ12I81PX" #auth_response["access_token"]
-instance_url ="https://lendlease.my.salesforce.com" #auth_response["instance_url"]
+access_token =  "00D410000006IEG!AQEAQGtCMKhuFJ67gC3r0G_mKCEzaEoX3dxsEb7lwbvSxC4UDfKdOTcHmMQ0GsHvHgUYMt20fe3zNUmEl9_HYODqlUK1Euv0" #auth_response["access_token"]
+instance_url ="https://lendlease-us.my.salesforce.com" #auth_response["instance_url"]
 headers = {"Authorization": f"Bearer {access_token}"}
 
 
@@ -61,7 +61,7 @@ headers = {"Authorization": f"Bearer {access_token}"}
 # print(response.text)
 
 # ==== STEP 2: Use a specific project name ====
-project_name = "Melbourne Quarter (Parent Project)"  # Replace with your actual project name
+project_name = "1 JAVA"  # Replace with your actual project name
 sanitized_projectname=sanitize_filename(project_name)  # Sanitize project name for file system compatibility
 print(f"📝 Using specific project: {project_name}")
 
@@ -106,12 +106,14 @@ for gate in gates["records"]:
         version = requests.get(f"{instance_url}/services/data/v63.0/query",
                                headers=headers, params={"q": version_query}).json()
 
+
         if not version["records"]:
             continue
 
         file_id = version["records"][0]["Id"]
         file_name = version["records"][0]["Title"]
         file_url = f"{instance_url}/services/data/v63.0/sobjects/ContentVersion/{file_id}/VersionData"
+
 
         # Prepare full file path
         safe_project_name = sanitize_filename(project_name)
@@ -121,8 +123,9 @@ for gate in gates["records"]:
         os.makedirs(save_dir, exist_ok=True)
         total_folders_created.add(save_dir)
 
-
-        save_path = os.path.join(save_dir, file_name)
+        current = datetime.now()
+        new_file_name = f"{current.strftime('%Y-%m-%d_%H-%M-%S')}_{file_name}"
+        save_path = os.path.join(save_dir, new_file_name)
 
         # Download and save file with error handling
         try:
