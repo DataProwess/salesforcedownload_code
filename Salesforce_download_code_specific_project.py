@@ -4,6 +4,7 @@ import requests
 from datetime import datetime
 import re
 from dotenv import load_dotenv
+import argparse
 
 load_dotenv()
 
@@ -38,8 +39,8 @@ SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN")  # Optional, only if needed
 # if "access_token" not in auth_response:
 #     raise Exception(f"Auth failed: {auth_response}")
 
-access_token =  "00D410000006IEG!AQEAQGtCMKhuFJ67gC3r0G_mKCEzaEoX3dxsEb7lwbvSxC4UDfKdOTcHmMQ0GsHvHgUYMt20fe3zNUmEl9_HYODqlUK1Euv0" #auth_response["access_token"]
-instance_url ="https://lendlease-us.my.salesforce.com" #auth_response["instance_url"]
+access_token =  "00D28000001yqXX!AQ8AQEvZS4vxUjJbGlFYq8Xh_wba0jtS2KhbmH61Ni8J552DAvfSQq7WRPznl9_F7FLKtnSkxaQ_7um5vkZ0V_u9U2OFNjW." #auth_response["access_token"]
+instance_url ="https://lendlease-as.my.salesforce.com" #auth_response["instance_url"]
 headers = {"Authorization": f"Bearer {access_token}"}
 
 
@@ -61,7 +62,12 @@ headers = {"Authorization": f"Bearer {access_token}"}
 # print(response.text)
 
 # ==== STEP 2: Use a specific project name ====
-project_name = "1 JAVA"  # Replace with your actual project name
+# ==== Argument Parsing ====
+parser = argparse.ArgumentParser(description='Download Salesforce documents for a project.')
+parser.add_argument('project_name', help='Name of the project to process.')
+args = parser.parse_args()
+
+project_name = args.project_name
 sanitized_projectname=sanitize_filename(project_name)  # Sanitize project name for file system compatibility
 print(f"📝 Using specific project: {project_name}")
 
